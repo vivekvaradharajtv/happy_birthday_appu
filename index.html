@@ -594,8 +594,37 @@ t<!doctype html>
         background: var(--gold-dim);
         margin: 1.8rem 0;
       }
-      #scene-letter .btn {
-        margin-left: 0;
+      .letter-continue {
+        margin-top: 2.2rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+        cursor: pointer;
+      }
+      .letter-continue-label {
+        font-size: 0.62rem;
+        letter-spacing: 0.38em;
+        text-transform: uppercase;
+        color: var(--gold-dim);
+        animation: fadein 2s ease 1.5s both;
+      }
+      .letter-continue-arrow {
+        color: var(--gold);
+        font-size: 1.1rem;
+        opacity: 0.5;
+        animation:
+          fadein 2s ease 1.5s both,
+          bounce-down 1.8s ease-in-out 2s infinite;
+      }
+      @keyframes bounce-down {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(5px);
+        }
       }
 
       /* ── SCENE 6: 27 THINGS ── */
@@ -782,7 +811,11 @@ t<!doctype html>
           <p>Happy Birthday.</p>
         </div>
         <div class="letter-rule"></div>
-        <div class="letter-from">— Vivek</div>
+        <div class="letter-from">— Vivi</div>
+        <div class="letter-continue" onclick="toScene('scene-27')">
+          <div class="letter-continue-label">continue</div>
+          <div class="letter-continue-arrow">↓</div>
+        </div>
       </div>
     </div>
 
@@ -804,9 +837,9 @@ t<!doctype html>
 
     <!-- ── SCENE 7: CLOSE ── -->
     <div class="scene" id="scene-close">
-      <div class="close-h">To the gem I found.<br />To the adipoli chik I found.</div>
+      <div class="close-h">To the gem.<br />To the adipoli chik.<br />To the future manja bulb itta cafe owner.</div>
       <div class="close-s">Happy Birthday, Appu.</div>
-      <div class="close-from">— Vivek</div>
+      <div class="close-from">— Vivi</div>
     </div>
 
     <script>
@@ -876,19 +909,72 @@ t<!doctype html>
           next.classList.add("active");
           if (id === "scene-close") launchConfetti();
           if (id === "scene-cake") sceneTimers.push(setTimeout(toggleMic, 800));
-          if (id === "scene-letter")
-            sceneTimers.push(setTimeout(() => toScene("scene-27"), 11000));
           busy = false;
         }, 1250);
       }
 
+      // ── BIRTHDAY MUSIC ──
+      let musicCtx = null;
+      let musicStarted = false;
+      let musicGain = null;
+
+      function startMusic() {
+        if (musicStarted) return;
+        musicStarted = true;
+        try {
+          musicCtx = new (window.AudioContext || window.webkitAudioContext)();
+          musicGain = musicCtx.createGain();
+          musicGain.gain.setValueAtTime(0.11, musicCtx.currentTime);
+          musicGain.connect(musicCtx.destination);
+          scheduleMelody();
+        } catch (e) {}
+      }
+
+      function scheduleMelody() {
+        if (!musicCtx) return;
+        const b = 0.46; // beat duration in seconds
+        // Happy Birthday to You — melody in G
+        // [frequency_hz, beats]  0 = rest
+        const song = [
+          [392, 0.75], [392, 0.25], [440, 1], [392, 1], [523.25, 1], [493.88, 2], [0, 0.5],
+          [392, 0.75], [392, 0.25], [440, 1], [392, 1], [587.33, 1], [523.25, 2], [0, 0.5],
+          [392, 0.75], [392, 0.25], [783.99, 1], [659.25, 1], [523.25, 1], [493.88, 1], [440, 2], [0, 0.5],
+          [698.46, 0.75], [698.46, 0.25], [659.25, 1], [523.25, 1], [587.33, 1], [523.25, 3],
+        ];
+
+        let t = musicCtx.currentTime + 0.15;
+        let total = 0;
+        song.forEach(([freq, beats]) => {
+          const dur = beats * b;
+          if (freq > 0) {
+            const osc = musicCtx.createOscillator();
+            const env = musicCtx.createGain();
+            osc.type = "triangle";
+            osc.frequency.value = freq;
+            env.gain.setValueAtTime(0, t);
+            env.gain.linearRampToValueAtTime(1, t + 0.035);
+            env.gain.setValueAtTime(1, t + dur * 0.68);
+            env.gain.linearRampToValueAtTime(0, t + dur * 0.96);
+            osc.connect(env);
+            env.connect(musicGain);
+            osc.start(t);
+            osc.stop(t + dur);
+          }
+          t += dur;
+          total += dur;
+        });
+
+        // Loop with a 3-second pause between repetitions
+        setTimeout(scheduleMelody, (total + 3) * 1000);
+      }
+
       // Click-anywhere to advance intro and message
       document.addEventListener("click", (e) => {
+        startMusic();
         const active = document.querySelector(".scene.active");
         if (!active) return;
         if (active.id === "scene-intro") toScene("scene-message");
         else if (active.id === "scene-message") toScene("scene-cake");
-        else if (active.id === "scene-letter") toScene("scene-27");
       });
 
       // Auto-advance intro after 5s, message after 5s
@@ -1012,6 +1098,7 @@ t<!doctype html>
           stopMic();
           return;
         }
+        startMusic();
         try {
           const stream = await navigator.mediaDevices.getUserMedia({
             audio: true,
