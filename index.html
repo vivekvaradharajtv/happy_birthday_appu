@@ -1,0 +1,1217 @@
+t<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Happy Birthday, Appu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg: #070503;
+        --cream: #f5e6d0;
+        --gold: #e8a84c;
+        --gold-dim: rgba(232, 168, 76, 0.3);
+        --amber: #ff8c42;
+        --text: #ddc9b0;
+        --dim: rgba(221, 201, 176, 0.5);
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--bg);
+        color: var(--cream);
+        font-family: "Lato", sans-serif;
+        font-weight: 300;
+      }
+
+      /* ── PARTICLES ── */
+      #particles {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 0;
+      }
+      .ember {
+        position: absolute;
+        border-radius: 50%;
+        background: var(--gold);
+        opacity: 0;
+        animation: ember-rise linear infinite;
+      }
+      @keyframes ember-rise {
+        0% {
+          opacity: 0;
+          transform: translate(0, 0) scale(1);
+        }
+        15% {
+          opacity: 0.7;
+        }
+        85% {
+          opacity: 0.2;
+        }
+        100% {
+          opacity: 0;
+          transform: translate(var(--dx), -90vh) scale(0.3);
+        }
+      }
+
+      /* ── SCENES ── */
+      .scene {
+        position: fixed;
+        inset: 0;
+        z-index: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+        opacity: 0;
+        transition: opacity 1.2s ease;
+        pointer-events: none;
+      }
+      .scene.active {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      /* ── BUTTON ── */
+      .btn {
+        margin-top: 2.5rem;
+        background: transparent;
+        border: 1px solid var(--gold-dim);
+        color: var(--gold);
+        padding: 0.75rem 2.5rem;
+        font-family: "Lato", sans-serif;
+        font-weight: 300;
+        font-size: 0.78rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.4s ease;
+      }
+      .btn:hover {
+        background: var(--gold-dim);
+        border-color: var(--gold);
+        box-shadow: 0 0 30px rgba(232, 168, 76, 0.2);
+      }
+
+      /* ── SCENE 1: INTRO ── */
+      #scene-intro {
+        text-align: center;
+      }
+      .intro-label {
+        font-size: 0.75rem;
+        letter-spacing: 0.45em;
+        text-transform: uppercase;
+        color: var(--dim);
+        animation: fadein 2s ease 0.5s both;
+      }
+      .intro-name {
+        font-family: "Playfair Display", serif;
+        font-weight: 300;
+        font-size: clamp(4.5rem, 16vw, 10rem);
+        color: var(--cream);
+        letter-spacing: 0.05em;
+        line-height: 1;
+        animation:
+          namein 2s ease 1s both,
+          glow-pulse 4s ease-in-out 3.2s infinite;
+      }
+      .intro-tagline {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1rem, 3.5vw, 1.5rem);
+        color: var(--dim);
+        margin-top: 0.75rem;
+        animation: fadein 2s ease 2.2s both;
+      }
+      #scene-intro .btn {
+        animation: fadein 2s ease 3.2s both;
+      }
+
+      @keyframes namein {
+        from {
+          opacity: 0;
+          transform: translateY(28px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadein {
+        from {
+          opacity: 0;
+          transform: translateY(12px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes glow-pulse {
+        0%,
+        100% {
+          text-shadow: 0 0 50px rgba(232, 168, 76, 0.2);
+        }
+        50% {
+          text-shadow: 0 0 100px rgba(232, 168, 76, 0.55);
+        }
+      }
+
+      /* ── SCENE 2: MESSAGE ── */
+      #scene-message {
+        text-align: center;
+        max-width: 480px;
+      }
+      #scene-message p {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1.1rem, 3.5vw, 1.6rem);
+        line-height: 1.9;
+        color: var(--text);
+      }
+      #scene-message em {
+        color: var(--gold);
+        font-style: normal;
+      }
+
+      /* ── SCENE 3: CAKE ── */
+      #scene-cake {
+        gap: 0.4rem;
+      }
+      .cake-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 0.4rem;
+      }
+
+      /* Candle grid */
+      .candles-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 3px;
+        margin-bottom: 0;
+        z-index: 2;
+        position: relative;
+      }
+      .candle-row {
+        display: flex;
+        gap: 5px;
+      }
+      .candle {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        cursor: pointer;
+        position: relative;
+        transition: transform 0.15s ease;
+        touch-action: manipulation;
+      }
+      .candle:hover:not(.out) {
+        transform: scale(1.2);
+      }
+      .c-flame {
+        width: 7px;
+        height: 11px;
+        position: relative;
+        margin-bottom: -1px;
+      }
+      .c-flame::before {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 7px;
+        height: 11px;
+        background: radial-gradient(
+          ellipse at 50% 85%,
+          #fff 8%,
+          #ffe082 32%,
+          #ff8c00 68%,
+          transparent 100%
+        );
+        border-radius: 50% 50% 30% 30%;
+        animation: flicker 0.45s ease-in-out infinite alternate;
+        transform-origin: 50% 100%;
+      }
+      .c-flame::after {
+        content: "";
+        position: absolute;
+        bottom: 2px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 3px;
+        height: 5px;
+        background: radial-gradient(
+          ellipse,
+          rgba(255, 255, 255, 0.95) 0%,
+          transparent 100%
+        );
+        border-radius: 50%;
+        animation: flicker-i 0.4s ease-in-out infinite alternate;
+      }
+      @keyframes flicker {
+        0% {
+          transform: translateX(-50%) scaleX(1) scaleY(1) rotate(-2deg);
+        }
+        100% {
+          transform: translateX(-50%) scaleX(0.82) scaleY(1.14) rotate(2deg);
+        }
+      }
+      @keyframes flicker-i {
+        0% {
+          opacity: 0.65;
+        }
+        100% {
+          opacity: 1;
+        }
+      }
+      .c-stick {
+        width: 5px;
+        height: 20px;
+        border-radius: 2px;
+      }
+      .c-smoke {
+        display: none;
+        position: absolute;
+        bottom: calc(100% - 6px);
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+      }
+      .c-smoke::after {
+        content: "";
+        display: block;
+        width: 3px;
+        height: 22px;
+        background: linear-gradient(to top, rgba(190, 190, 190, 0.6), transparent);
+        border-radius: 50% 50% 0 0;
+        animation: smoke-rise 1.6s ease-out forwards;
+      }
+      @keyframes smoke-rise {
+        0% {
+          transform: scaleY(0) translateY(0);
+          opacity: 0.7;
+        }
+        60% {
+          transform: scaleY(1) translateY(-6px);
+          opacity: 0.35;
+        }
+        100% {
+          transform: scaleY(1.3) translateY(-18px);
+          opacity: 0;
+        }
+      }
+      .candle.out .c-flame {
+        display: none;
+      }
+      .candle.out .c-smoke {
+        display: block;
+      }
+
+      /* Cake body */
+      .cake-visual {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        position: relative;
+      }
+      .cake-frosting {
+        width: 240px;
+        height: 14px;
+        background: #f0e6f5;
+        border-radius: 6px 6px 0 0;
+        position: relative;
+        overflow: visible;
+        z-index: 1;
+      }
+      .drip {
+        position: absolute;
+        background: #f0e6f5;
+        border-radius: 0 0 50% 50%;
+      }
+      .cake-body {
+        width: 240px;
+        height: 88px;
+        position: relative;
+        overflow: hidden;
+        background: linear-gradient(
+          135deg,
+          #b87cc8 0%,
+          #b87cc8 25%,
+          #9e62b0 25%,
+          #9e62b0 50%,
+          #b87cc8 50%,
+          #b87cc8 75%,
+          #9e62b0 75%,
+          #9e62b0 100%
+        );
+        background-size: 22px 22px;
+      }
+      .cake-body::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          to right,
+          rgba(0, 0, 0, 0.25) 0%,
+          transparent 12%,
+          transparent 88%,
+          rgba(0, 0, 0, 0.25) 100%
+        );
+      }
+      .cake-base {
+        width: 264px;
+        height: 14px;
+        background: radial-gradient(ellipse at 50% 0%, #c9a0d8, #7a4d8e);
+        border-radius: 50%;
+        margin-top: -2px;
+      }
+
+      /* Candle status + mic */
+      .candle-status {
+        font-size: 0.72rem;
+        color: var(--dim);
+        letter-spacing: 0.12em;
+        text-align: center;
+        margin-top: 0.6rem;
+      }
+      .candle-status span {
+        color: var(--gold);
+        font-weight: 400;
+      }
+      .mic-area {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-top: 0.5rem;
+      }
+      .mic-btn {
+        background: transparent;
+        border: 1px solid rgba(255, 140, 66, 0.3);
+        color: var(--amber);
+        padding: 0.45rem 1.1rem;
+        font-family: "Lato", sans-serif;
+        font-weight: 300;
+        font-size: 0.7rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.3s;
+      }
+      .mic-btn:hover,
+      .mic-btn.on {
+        background: rgba(255, 140, 66, 0.14);
+        border-color: var(--amber);
+      }
+      .mic-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--amber);
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .mic-dot.on {
+        opacity: 1;
+        animation: blink 0.65s ease infinite;
+      }
+      @keyframes blink {
+        0%,
+        100% {
+          opacity: 1;
+        }
+        50% {
+          opacity: 0.15;
+        }
+      }
+
+      /* ── SCENE 4: CUT ── */
+      #scene-cut {
+        gap: 1.5rem;
+      }
+      .cut-prompt {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1rem, 3.5vw, 1.45rem);
+        color: var(--dim);
+        text-align: center;
+      }
+      .cut-hint {
+        font-size: 0.68rem;
+        color: var(--dim);
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+      }
+
+      /* Top-view circular cut cake */
+      .cut-circle-wrap {
+        width: 230px;
+        height: 230px;
+        position: relative;
+        cursor: crosshair;
+        user-select: none;
+        -webkit-user-select: none;
+      }
+      .cut-h {
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: radial-gradient(
+          circle at 40% 38%,
+          #d4aee0 0%,
+          #9e62b0 55%,
+          #7a4d8a 100%
+        );
+        transition: transform 1.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow:
+          0 0 0 9px #f0e6f5,
+          0 0 0 13px #b87cc8,
+          0 25px 50px rgba(0, 0, 0, 0.6),
+          0 0 60px rgba(180, 100, 220, 0.2);
+      }
+      .cut-h-l {
+        clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+      }
+      .cut-h-r {
+        clip-path: polygon(50% 0, 100% 0, 100% 100%, 50% 100%);
+      }
+      .cut-cake-text {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        pointer-events: none;
+        z-index: 3;
+        transition: opacity 0.4s ease;
+        white-space: nowrap;
+      }
+      .cut-cake-text-l1 {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 0.88rem;
+        color: rgba(255, 248, 255, 0.88);
+        letter-spacing: 0.04em;
+        text-shadow:
+          0 0 12px rgba(255, 255, 255, 0.5),
+          0 1px 3px rgba(0, 0, 0, 0.3);
+      }
+      .cut-cake-text-l2 {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: 1.35rem;
+        color: #fff;
+        letter-spacing: 0.06em;
+        text-shadow:
+          0 0 18px rgba(255, 255, 255, 0.7),
+          0 0 35px rgba(220, 180, 255, 0.5),
+          0 1px 3px rgba(0, 0, 0, 0.3);
+        margin-top: 0.12rem;
+      }
+      .cut-line-el {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        width: 2px;
+        height: 0;
+        background: rgba(255, 255, 255, 0.9);
+        transform: translateX(-50%);
+        pointer-events: none;
+        transition: height 0.2s ease;
+        z-index: 4;
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+      }
+      .cut-glow {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1.1s ease 0.5s;
+        font-size: 1.8rem;
+        z-index: 5;
+      }
+
+      /* ── SCENE 5: LETTER ── */
+      #scene-letter {
+        overflow-y: auto;
+        padding: 3.5rem 2rem;
+        -webkit-overflow-scrolling: touch;
+      }
+      .letter-wrap {
+        max-width: 540px;
+        width: 100%;
+      }
+      .letter-to {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.3rem, 4vw, 1.9rem);
+        color: var(--cream);
+        margin-bottom: 1.8rem;
+      }
+      .letter-body {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(0.95rem, 2.5vw, 1.18rem);
+        line-height: 2.1;
+        color: var(--text);
+      }
+      .letter-body p {
+        margin-bottom: 1.4rem;
+      }
+      .letter-from {
+        font-family: "Playfair Display", serif;
+        color: var(--dim);
+        font-size: 1.05rem;
+      }
+      .letter-rule {
+        width: 36px;
+        height: 1px;
+        background: var(--gold-dim);
+        margin: 1.8rem 0;
+      }
+      #scene-letter .btn {
+        margin-left: 0;
+      }
+
+      /* ── SCENE 6: 27 THINGS ── */
+      #scene-27 {
+        text-align: center;
+        gap: 0.4rem;
+      }
+      .things-label {
+        font-size: 0.72rem;
+        letter-spacing: 0.38em;
+        text-transform: uppercase;
+        color: var(--dim);
+        margin-bottom: 0.8rem;
+      }
+      .thing-n {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(3.5rem, 13vw, 7.5rem);
+        color: rgba(232, 168, 76, 0.18);
+        line-height: 1;
+      }
+      .thing-t-wrap {
+        width: min(480px, 90vw);
+        height: 7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        position: relative;
+      }
+      .thing-t {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(1.1rem, 3.5vw, 1.65rem);
+        color: var(--cream);
+        max-width: 480px;
+        line-height: 1.55;
+        text-align: center;
+        position: absolute;
+      }
+      .thing-controls {
+        display: flex;
+        align-items: center;
+        gap: 2.5rem;
+        margin-top: 1.5rem;
+      }
+      .tc-btn {
+        background: transparent;
+        border: none;
+        color: var(--gold);
+        font-size: 1.4rem;
+        cursor: pointer;
+        opacity: 0.5;
+        transition: opacity 0.3s;
+        padding: 0.5rem;
+      }
+      .tc-btn:hover {
+        opacity: 1;
+      }
+      .tc-btn:disabled {
+        opacity: 0.12;
+        cursor: default;
+      }
+      .tc-prog {
+        font-size: 0.72rem;
+        color: var(--dim);
+        letter-spacing: 0.12em;
+      }
+
+      /* ── SCENE 7: CLOSE ── */
+      #scene-close {
+        text-align: center;
+        gap: 0;
+      }
+      .close-h {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.4rem, 5vw, 2.4rem);
+        color: var(--cream);
+        line-height: 1.6;
+      }
+      .close-s {
+        font-family: "Playfair Display", serif;
+        font-style: italic;
+        font-size: clamp(0.95rem, 2.5vw, 1.2rem);
+        color: var(--dim);
+        margin-top: 1.6rem;
+        max-width: 360px;
+        line-height: 1.75;
+      }
+      .close-from {
+        font-size: 0.8rem;
+        letter-spacing: 0.28em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-top: 2.2rem;
+      }
+
+      /* ── CONFETTI ── */
+      .conf-p {
+        position: fixed;
+        top: -14px;
+        pointer-events: none;
+        z-index: 99;
+        animation: conf-fall linear forwards;
+      }
+      @keyframes conf-fall {
+        0% {
+          transform: translateY(0) rotate(0deg);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(112vh) rotate(580deg);
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="particles"></div>
+
+    <!-- ── SCENE 1: INTRO ── -->
+    <div class="scene active" id="scene-intro">
+      <div class="intro-label">a birthday, just for you</div>
+      <div class="intro-name">Appu</div>
+      <div class="intro-tagline">27 looks really good on you.</div>
+    </div>
+
+    <!-- ── SCENE 2: MESSAGE ── -->
+    <div class="scene" id="scene-message">
+      <p>
+        I made this because some people deserve<br />
+        more than just a message.<br />
+        <em>You're one of them.</em>
+      </p>
+    </div>
+
+    <!-- ── SCENE 3: CAKE ── -->
+    <div class="scene" id="scene-cake">
+      <div class="cake-label">Blow out the candles</div>
+      <div class="candles-grid" id="candles-grid"></div>
+      <div class="cake-visual">
+        <div class="cake-frosting" id="cake-frosting"></div>
+        <div class="cake-body"></div>
+        <div class="cake-base"></div>
+      </div>
+      <div class="candle-status">
+        <span id="n-left">27</span> candles remaining &mdash; blow or tap
+      </div>
+      <div class="mic-area">
+        <div class="mic-dot" id="mic-dot"></div>
+      </div>
+    </div>
+
+    <!-- ── SCENE 4: CUT ── -->
+    <div class="scene" id="scene-cut">
+      <div class="cut-prompt">Now, cut the cake.</div>
+      <div class="cut-circle-wrap" id="cut-wrapper">
+        <div class="cut-h cut-h-l" id="cut-l"></div>
+        <div class="cut-h cut-h-r" id="cut-r"></div>
+        <div class="cut-cake-text" id="cut-text">
+          <div class="cut-cake-text-l1">Happy Birthday</div>
+          <div class="cut-cake-text-l2">Appu!!!</div>
+        </div>
+        <div class="cut-line-el" id="cut-line"></div>
+        <div class="cut-glow" id="cut-glow">✨</div>
+      </div>
+      <div class="cut-hint">drag across to cut</div>
+    </div>
+
+    <!-- ── SCENE 5: LETTER ── -->
+    <div class="scene" id="scene-letter">
+      <div class="letter-wrap">
+        <div class="letter-to">Appu,</div>
+        <div class="letter-body">
+          <p>
+            You're the kind of person who makes people feel like they matter.
+            You listen in a way most people don't. You push in a way most
+            people won't.
+          </p>
+          <p>
+            There are people you meet who leave a mark — not because they try,
+            but simply because of who they are. You're one of those people.
+          </p>
+          <p>27 is lucky to have you.</p>
+          <p>Happy Birthday.</p>
+        </div>
+        <div class="letter-rule"></div>
+        <div class="letter-from">— Vivek</div>
+      </div>
+    </div>
+
+    <!-- ── SCENE 6: 27 THINGS ── -->
+    <div class="scene" id="scene-27">
+      <div class="things-label">27 things about you</div>
+      <div class="thing-n" id="thing-n">01</div>
+      <div class="thing-t-wrap">
+        <div class="thing-t" id="thing-t"></div>
+      </div>
+      <div class="thing-controls">
+        <button class="tc-btn" id="prev-btn" onclick="prevThing()" disabled>
+          ←
+        </button>
+        <div class="tc-prog"><span id="cur-t">1</span> / 27</div>
+        <button class="tc-btn" id="next-btn" onclick="nextThing()">→</button>
+      </div>
+    </div>
+
+    <!-- ── SCENE 7: CLOSE ── -->
+    <div class="scene" id="scene-close">
+      <div class="close-h">To the gem I found.<br />To the adipoli chik I found.</div>
+      <div class="close-s">Happy Birthday, Appu.</div>
+      <div class="close-from">— Vivek</div>
+    </div>
+
+    <script>
+      // ── DATA ──
+      const THINGS = [
+        "Caring — the way you care for people feels effortless. But everyone around you feels it.",
+        "Considering — you think about how others feel before you speak. That's not common. That's thoughtful.",
+        "Charming — unapologetically, naturally, without even trying.",
+        "A happy pill — you walk in and the mood shifts. That's a superpower.",
+        "You push the people you love — not to be someone else, but to be more of themselves.",
+        "Emotional — you feel deeply and aren't afraid of it. In a world that runs from feelings, that takes courage.",
+        "Gorgeous — quietly, warmly, completely. Inside and out.",
+        "Focused — when you set your mind on something, you don't drift. You stay.",
+        "A dreamer — you still have things you're reaching for. That's a quality worth protecting.",
+        "Easy going — no pretense, no performance. Just you, and it's enough.",
+        "Inspiring — you inspire people without knowing you're doing it.",
+        "Motivating — there's something about you that makes people want to do better.",
+        "Health conscious — you take care of yourself. And quietly remind others to too.",
+        "You make me think differently. That's not something everyone can do.",
+        "You value emotions — you take feelings seriously. You don't brush them off.",
+        "You value time — you understand that it's not something you get back.",
+        "You value actions — you believe in showing up, not just promising to.",
+        "You value effort — you notice it in others, and you give it yourself.",
+        "Your smile spreads. Rooms change when you walk in.",
+        "Beautiful — in the way that stays with people after you've left.",
+        "A talented driver — you own the road. Confidently, fearlessly, completely yourself.",
+        "An explorer — of places, of ideas, of people. You never stop being curious.",
+        "A proper foodie — someone who finds real joy in the simple pleasure of good food.",
+        "A loving sister — the kind families are lucky to have.",
+        "A loving daughter — the kind parents quietly thank the universe for.",
+        "A caring sister — who shows up, not just shows love.",
+        "A caring daughter — in every small, quiet way that matters.",
+      ];
+
+      const CANDLE_COLORS = [
+        "#ff6b6b",
+        "#ffd93d",
+        "#6bcb77",
+        "#4d96ff",
+        "#ff6b9d",
+        "#c77dff",
+        "#ff9a3c",
+        "#00c9a7",
+      ];
+
+      // ── SCENE MANAGEMENT ──
+      let busy = false;
+      let sceneTimers = [];
+
+      function clearSceneTimers() {
+        sceneTimers.forEach(clearTimeout);
+        sceneTimers = [];
+      }
+
+      function toScene(id) {
+        if (busy) return;
+        busy = true;
+        clearSceneTimers();
+        const cur = document.querySelector(".scene.active");
+        cur.style.opacity = "0";
+        cur.style.pointerEvents = "none";
+        setTimeout(() => {
+          cur.classList.remove("active");
+          cur.style.opacity = "";
+          cur.style.pointerEvents = "";
+          const next = document.getElementById(id);
+          next.classList.add("active");
+          if (id === "scene-close") launchConfetti();
+          if (id === "scene-cake") sceneTimers.push(setTimeout(toggleMic, 800));
+          if (id === "scene-letter")
+            sceneTimers.push(setTimeout(() => toScene("scene-27"), 11000));
+          busy = false;
+        }, 1250);
+      }
+
+      // Click-anywhere to advance intro and message
+      document.addEventListener("click", (e) => {
+        const active = document.querySelector(".scene.active");
+        if (!active) return;
+        if (active.id === "scene-intro") toScene("scene-message");
+        else if (active.id === "scene-message") toScene("scene-cake");
+        else if (active.id === "scene-letter") toScene("scene-27");
+      });
+
+      // Auto-advance intro after 5s, message after 5s
+      function startAutoAdvance() {
+        sceneTimers.push(
+          setTimeout(() => {
+            if (
+              document.getElementById("scene-intro").classList.contains("active")
+            )
+              toScene("scene-message");
+          }, 5000),
+        );
+      }
+      startAutoAdvance();
+      // Auto-advance message after it becomes active via MutationObserver
+      new MutationObserver(() => {
+        const msg = document.getElementById("scene-message");
+        if (msg.classList.contains("active")) {
+          sceneTimers.push(
+            setTimeout(() => {
+              if (msg.classList.contains("active")) toScene("scene-cake");
+            }, 5000),
+          );
+        }
+      }).observe(document.getElementById("scene-message"), {
+        attributes: true,
+        attributeFilter: ["class"],
+      });
+
+      // ── EMBERS ──
+      (function () {
+        const p = document.getElementById("particles");
+        function spawn() {
+          const el = document.createElement("div");
+          el.className = "ember";
+          const s = 1.5 + Math.random() * 3;
+          el.style.cssText = `
+      left:${Math.random() * 100}vw; bottom:0;
+      width:${s}px; height:${s}px;
+      --dx:${Math.random() * 80 - 40}px;
+      animation-duration:${10 + Math.random() * 12}s;
+      animation-delay:${Math.random() * 5}s;
+    `;
+          p.appendChild(el);
+          setTimeout(() => el.remove(), 25000);
+        }
+        for (let i = 0; i < 10; i++) spawn();
+        setInterval(spawn, 600);
+      })();
+
+      // ── BUILD CAKE ──
+      let nLeft = 27;
+      const candleEls = [];
+
+      (function buildCake() {
+        // Frosting drips on candle scene
+        const fr = document.getElementById("cake-frosting");
+        [8, 30, 54, 78, 105, 132, 158, 184, 210].forEach((x) => {
+          const d = document.createElement("div");
+          d.className = "drip";
+          const w = 9 + Math.random() * 9;
+          const h = 11 + Math.random() * 13;
+          d.style.cssText = `left:${x}px; width:${w}px; height:${h}px; bottom:-${h * 0.88}px;`;
+          fr.appendChild(d);
+        });
+
+        // Candles: 3 rows of 9
+        const grid = document.getElementById("candles-grid");
+        let idx = 0;
+        [9, 9, 9].forEach((count) => {
+          const row = document.createElement("div");
+          row.className = "candle-row";
+          for (let i = 0; i < count; i++) {
+            const color = CANDLE_COLORS[idx % CANDLE_COLORS.length];
+            const c = document.createElement("div");
+            c.className = "candle";
+            c.innerHTML = `
+              <div class="c-flame"></div>
+              <div class="c-stick" style="background:linear-gradient(to right,${color}bb,${color},${color}bb);"></div>
+              <div class="c-smoke"></div>
+            `;
+            c.addEventListener("click", () => blowCandle(c));
+            c.addEventListener("touchend", (e) => {
+              e.preventDefault();
+              blowCandle(c);
+            });
+            row.appendChild(c);
+            candleEls.push(c);
+            idx++;
+          }
+          grid.appendChild(row);
+        });
+      })();
+
+      function blowCandle(el) {
+        if (el.classList.contains("out")) return;
+        el.classList.add("out");
+        nLeft--;
+        document.getElementById("n-left").textContent = nLeft;
+        if (nLeft === 0) {
+          stopMic();
+          setTimeout(() => toScene("scene-cut"), 1300);
+        }
+      }
+
+      function blowRandom() {
+        const lit = candleEls.filter((c) => !c.classList.contains("out"));
+        if (!lit.length) return;
+        blowCandle(lit[Math.floor(Math.random() * lit.length)]);
+      }
+
+      // ── MICROPHONE ──
+      let micOn = false,
+        audioCtx,
+        analyser,
+        micStream,
+        blowBlock = false;
+
+      async function toggleMic() {
+        if (micOn) {
+          stopMic();
+          return;
+        }
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: false,
+          });
+          micStream = stream;
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 512;
+          audioCtx.createMediaStreamSource(stream).connect(analyser);
+          micOn = true;
+          const dot = document.getElementById("mic-dot");
+          if (dot) dot.classList.add("on");
+          detectBlow();
+        } catch (e) {
+          // mic denied — user can still tap candles
+        }
+      }
+
+      function stopMic() {
+        if (!micOn) return;
+        micOn = false;
+        micStream?.getTracks().forEach((t) => t.stop());
+        try {
+          audioCtx?.close();
+        } catch (e) {}
+        const dot = document.getElementById("mic-dot");
+        if (dot) dot.classList.remove("on");
+      }
+
+      function detectBlow() {
+        if (!micOn) return;
+        const buf = new Uint8Array(analyser.frequencyBinCount);
+        analyser.getByteFrequencyData(buf);
+        const avg = buf.reduce((a, b) => a + b, 0) / buf.length;
+        if (avg > 22 && !blowBlock) {
+          blowRandom();
+          blowBlock = true;
+          setTimeout(() => (blowBlock = false), 140);
+        }
+        requestAnimationFrame(detectBlow);
+      }
+
+      // ── CAKE CUTTING ──
+      (function initCut() {
+        const wrapper = document.getElementById("cut-wrapper");
+        let dragging = false,
+          startX = 0,
+          hasCut = false;
+
+        function onStart(x) {
+          dragging = true;
+          startX = x;
+        }
+        function onMove(x) {
+          if (!dragging || hasCut) return;
+          document.getElementById("cut-line").style.height = "230px";
+        }
+        function onEnd(x) {
+          if (!dragging || hasCut) return;
+          dragging = false;
+          if (Math.abs(x - startX) > 22) {
+            hasCut = true;
+            doCut();
+          }
+        }
+
+        wrapper.addEventListener("mousedown", (e) => onStart(e.clientX));
+        window.addEventListener("mousemove", (e) => onMove(e.clientX));
+        window.addEventListener("mouseup", (e) => onEnd(e.clientX));
+
+        wrapper.addEventListener(
+          "touchstart",
+          (e) => {
+            e.preventDefault();
+            onStart(e.touches[0].clientX);
+          },
+          { passive: false },
+        );
+        wrapper.addEventListener(
+          "touchmove",
+          (e) => {
+            e.preventDefault();
+            onMove(e.touches[0].clientX);
+          },
+          { passive: false },
+        );
+        wrapper.addEventListener("touchend", (e) => {
+          e.preventDefault();
+          onEnd(e.changedTouches[0].clientX);
+        });
+      })();
+
+      function doCut() {
+        document.getElementById("cut-text").style.opacity = "0";
+        document.getElementById("cut-l").style.transform =
+          "translateX(-32px) rotate(-6deg)";
+        document.getElementById("cut-r").style.transform =
+          "translateX(32px) rotate(6deg)";
+        document.getElementById("cut-glow").style.opacity = "1";
+        setTimeout(() => toScene("scene-letter"), 2800);
+      }
+
+      // ── 27 THINGS ──
+      let curT = 0;
+      function renderThing(dir = 1) {
+        const nEl = document.getElementById("thing-n");
+        const tEl = document.getElementById("thing-t");
+        const outY = dir > 0 ? "-40px" : "40px";
+        nEl.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+        tEl.style.transition = "opacity 0.25s ease, transform 0.25s ease";
+        nEl.style.opacity = "0";
+        nEl.style.transform = `translateY(${outY})`;
+        tEl.style.opacity = "0";
+        tEl.style.transform = `translateY(${outY})`;
+
+        setTimeout(() => {
+          nEl.style.transition = "none";
+          tEl.style.transition = "none";
+          nEl.textContent = String(curT + 1).padStart(2, "0");
+          tEl.textContent = THINGS[curT];
+          document.getElementById("cur-t").textContent = curT + 1;
+          const inY = dir > 0 ? "40px" : "-40px";
+          nEl.style.transform = `translateY(${inY})`;
+          tEl.style.transform = `translateY(${inY})`;
+          requestAnimationFrame(() =>
+            requestAnimationFrame(() => {
+              nEl.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+              tEl.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+              nEl.style.opacity = "1";
+              nEl.style.transform = "translateY(0)";
+              tEl.style.opacity = "1";
+              tEl.style.transform = "translateY(0)";
+            }),
+          );
+        }, 280);
+
+        document.getElementById("prev-btn").disabled = curT === 0;
+        const nb = document.getElementById("next-btn");
+        if (curT === THINGS.length - 1) {
+          nb.textContent = "✓";
+          nb.onclick = () => toScene("scene-close");
+          nb.disabled = false;
+        } else {
+          nb.textContent = "→";
+          nb.onclick = nextThing;
+          nb.disabled = false;
+        }
+      }
+      function nextThing() {
+        if (curT < THINGS.length - 1) {
+          curT++;
+          renderThing(1);
+        }
+      }
+      function prevThing() {
+        if (curT > 0) {
+          curT--;
+          renderThing(-1);
+        }
+      }
+
+      // Keyboard nav for 27 things
+      document.addEventListener("keydown", (e) => {
+        if (!document.getElementById("scene-27").classList.contains("active"))
+          return;
+        if (e.key === "ArrowRight") nextThing();
+        if (e.key === "ArrowLeft") prevThing();
+      });
+
+      // ── CONFETTI ──
+      function launchConfetti() {
+        const cols = [
+          "#e8a84c",
+          "#f5e6d0",
+          "#c9a0d0",
+          "#ff8c42",
+          "#ffffff",
+          "#6bcb77",
+          "#4d96ff",
+        ];
+        for (let i = 0; i < 110; i++) {
+          const el = document.createElement("div");
+          el.className = "conf-p";
+          const s = 5 + Math.random() * 8;
+          el.style.cssText = `
+      left:${Math.random() * 100}vw;
+      width:${s}px; height:${s}px;
+      background:${cols[Math.floor(Math.random() * cols.length)]};
+      border-radius:${Math.random() > 0.5 ? "50%" : "2px"};
+      animation-duration:${2.5 + Math.random() * 3.5}s;
+      animation-delay:${Math.random() * 1.8}s;
+    `;
+          document.body.appendChild(el);
+          setTimeout(() => el.remove(), 8000);
+        }
+      }
+
+      // ── INIT ──
+      renderThing();
+    </script>
+  </body>
+</html>
